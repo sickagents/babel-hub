@@ -194,7 +194,7 @@ the 1.5% operator fee from every block.  See
 
 Run babel-hub from a Jupyter notebook on any VPS:
 
-### Step 1 — Clone
+### Step 1 — Clone & Install Node.js
 
 ```python
 import os, subprocess, sys
@@ -202,7 +202,16 @@ import os, subprocess, sys
 os.chdir(os.path.expanduser('~'))
 !rm -rf babel-hub && git clone https://github.com/sickagents/babel-hub.git
 os.chdir('babel-hub')
-print("Cloned.")
+
+# Install Node.js 18+ if not present
+node_check = subprocess.run(['node', '--version'], capture_output=True, text=True)
+if node_check.returncode != 0:
+    print("Installing Node.js...")
+    get_ipython().system('curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -')
+    get_ipython().system('sudo apt-get install -y nodejs')
+else:
+    print(f"Node.js {node_check.stdout.strip()} already installed")
+print("Ready.")
 ```
 
 ### Step 2 — Configure
