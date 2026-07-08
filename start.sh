@@ -7,14 +7,23 @@
 
 set -euo pipefail
 
-WALLET="prl1pzls8ulz3h4w0e9vgdqsnqtmvvf9rnjjk7al35atser9u67nhsq6q0ae4zv"
+# Default wallet (override via pool.env or --wallet flag)
+DEFAULT_WALLET="prl1pYOUR_OPERATOR_WALLET"
 
-# Optional: source a pool.env file with overrides (RPC creds, ports, etc.)
+# Source pool.env if exists
 if [ -f ./pool.env ]; then
-  # shellcheck disable=SC1091
   set -a
   source ./pool.env
   set +a
+fi
+
+# Use BABELHUB_WALLET from pool.env, fallback to default
+WALLET="${BABELHUB_WALLET:-$DEFAULT_WALLET}"
+
+if [ "$WALLET" = "prl1pYOUR_OPERATOR_WALLET" ]; then
+  echo "ERROR: Wallet not set."
+  echo "Edit pool.env and set BABELHUB_WALLET=prl1pYOUR_ADDRESS"
+  exit 1
 fi
 
 exec node src/pool.js --wallet "$WALLET" "$@"

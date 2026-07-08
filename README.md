@@ -251,7 +251,7 @@ import os, subprocess, time
 os.chdir(os.path.expanduser('~/babel-hub'))
 
 proc = subprocess.Popen(
-    ['node', 'src/pool.js'],
+    ['bash', 'start.sh'],
     stdout=open('/tmp/babel-hub.log', 'w'),
     stderr=subprocess.STDOUT,
     start_new_session=True
